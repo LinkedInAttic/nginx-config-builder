@@ -1,0 +1,13 @@
+*.egg
+*.egg-info/
+*.eggs/
+*.pyc
+*.pyo
+*.sublime-*
+.cache/
+.coverage
+.env
+.tox*
+.venv*
+venv/
+activate
