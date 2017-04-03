@@ -9,5 +9,6 @@
 .env
 .tox*
 .venv*
+dist/
 venv/
 activate
