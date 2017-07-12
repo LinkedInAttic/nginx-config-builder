@@ -4,7 +4,12 @@ import datetime
 import sys
 import os
 
+sys.path.insert(0, '../src')
+
 import nginx.config.builder
+import nginx.config.api
+import nginx.config.common
+import nginx.config.helpers
 
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode']
 source_suffix = '.rst'

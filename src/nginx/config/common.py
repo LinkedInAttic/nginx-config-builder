@@ -1,5 +1,6 @@
 """
-Defines a variety of common nginx config boilerplate. Includes a lot of uwsgi defaults and settings.
+This module contains functions and variables that provide a variety of commonly used nginx config
+boilerplate.
 """
 from . import helpers
 from .api import EmptyBlock, Block
@@ -143,7 +144,10 @@ statsd_options_location = _statsd_options_location()
 
 
 def ratelimit_options(qps):
-    """ create rate limit shared memory zone, used for tracking different connections """
+    """ Rcreate rate limit shared memory zone, used for tracking different connections.
+
+    :param int|str qps: Queries per second to rate limit.
+    """
     return EmptyBlock(
         limit_req_zone=[
             '$binary_remote_addr',
@@ -154,7 +158,10 @@ def ratelimit_options(qps):
 
 
 def ratelimit_options_location(burst_qps):
-    """ this needs to be added to a location block in order for that location to get rate limiting"""
+    """ This needs to be added to a location block in order for that location to get rate limiting
+
+    :param int|str burst_qps: Queries per second to allow bursting to.
+    """
     return EmptyBlock(
         limit_req_zone=[
             'zone=ratelimit_zone',
