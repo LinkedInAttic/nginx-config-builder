@@ -33,7 +33,7 @@ def duplicate_options(key, values):
             duplicate_options('uwsgi_cache_valid', (['404', '5s'], ['200', '60s'])),
         )
 
-    Which would produce:
+    Which would produce::
 
         location / {
             uwsgi_cache_valid 200 60s;

@@ -1,11 +1,12 @@
 """
-Defines a pluggable builder framework for manipulating nginx configs from within python.
+The Builder API defines a pluggable builder framework for manipulating nginx configs from within python.
 
 Building a config
 =================
 
-Every config built using the builder pattern starts off with creating a :py:class:NginxConfigBuilder:
-object::
+Every config built using the builder pattern starts off with creating a :class:NginxConfigBuilder::
+
+    from nginx.config.builder import NginxConfigBuilder
 
     nginx = NginxConfigBuilder()
 
@@ -41,10 +42,10 @@ This generates a simple config that looks like this::
 Plugins
 =======
 
-A plugin is a class that inherits from :py:class:`nginx.config.builder.baseplugins.Plugin` that provides
-additional methods which can be chained off of the :py:class:`NginxConfigBuilder` object. These plugins provide
+A plugin is a class that inherits from :class:`nginx.config.builder.baseplugins.Plugin` that provides
+additional methods which can be chained off of the :class:`NginxConfigBuilder` object. These plugins provide
 convenience methods that manipulate the underlying nginx configuration that gets built by the
-:py:class:`NginxConfigBuilder`.
+:class:`NginxConfigBuilder`.
 
 A simple plugin only needs to define what methods it's going to export::
 
@@ -58,8 +59,8 @@ A simple plugin only needs to define what methods it's going to export::
         def noop(self):
              pass
 
-This NoopPlugin provides a simple function that can be called off of a :py:class:`NginxConfigBuilder` that
-does nothing successfully. More complex plugins can be found in :py:mod:`nginx.config.builder.plugins`
+This NoopPlugin provides a simple function that can be called off of a :class:`NginxConfigBuilder` that
+does nothing successfully. More complex plugins can be found in :mod:`nginx.config.builder.plugins`
 
 To use this NoopPlugin, we need to create a config builder and then register the plugin with it::
 
@@ -189,7 +190,7 @@ class NginxConfigBuilder(object):
 
         This is a convenience method for any plugins that need to quickly access the top of the config tree.
 
-        :returns nginx.config.Block: Top of the config block
+        :returns :class:`nginx.config.Block`: Top of the config block
         """
         return self._http
 

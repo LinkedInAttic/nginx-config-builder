@@ -28,21 +28,24 @@ else:
 
 
 class Venv(setuptools.Command):
-    user_options = []
+    user_options = [('python=', None, 'Which interpreter to build your venv with')]
 
     def initialize_options(self):
-        """Abstract method that is required to be overwritten"""
+        self.python = ''
 
     def finalize_options(self):
         """Abstract method that is required to be overwritten"""
 
     def run(self):
         venv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'venv', 'nginx-config-builder')
-        venv_cmd = [
-            'virtualenv',
-            venv_path
-        ]
-        print('Creating virtual environment in {path}'.format(path=venv_path))
+        if '3' in self.python:
+            venv_cmd = [self.python, '-m', 'venv']
+        else:
+            venv_cmd = ['virtualenv']
+            if self.python:
+                venv_cmd.extend(['-p', self.python])
+        venv_cmd.append(venv_path)
+        print('Creating virtual environment in ', venv_path)
         subprocess.check_call(venv_cmd)
         print('Linking `activate` to top level of project.\n')
         print('To activate, simply run `source activate`.')
