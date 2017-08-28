@@ -1,5 +1,5 @@
 from nginx.config.api.blocks import Block, EmptyBlock
-from nginx.config.api.options import KeyOption, KeyValueOption, KeyMultiValueOption
+from nginx.config.api.options import KeyOption, KeyValueOption, KeyMultiValueOption, KeyValuesMultilines
 from nginx.config.helpers import duplicate_options
 
 
@@ -42,6 +42,12 @@ def test_options():
 
     opt3 = KeyMultiValueOption('opt', value=['v', 'a', 'l'])
     assert repr(opt3) == '\nopt v a l;'
+
+    opt4 = KeyValuesMultilines('opt', values=['value1', 'value2'])
+    assert repr(opt4) == '\nopt value1;\nopt value2;'
+
+    opt5 = KeyValuesMultilines('opt', values=[['v1', 'v3', 'v5'], ['v2', 'v4', 'v6']])
+    assert repr(opt5) == '\nopt v1 v3 v5;\nopt v2 v4 v6;'
 
 
 def test_sections():
