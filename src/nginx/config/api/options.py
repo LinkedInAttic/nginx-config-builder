@@ -63,6 +63,22 @@ class KeyMultiValueOption(KeyValueOption):
         )
 
 
+class KeyValuesMultilines(Base):
+    def __init__(self, name, values=[]):
+        self.name = name
+        self.lines = []
+        for value in values:
+            if isinstance(value, list):
+                self.lines.append(' '.join([str(v) for v in value]))
+            else:
+                self.lines.append(str(value))
+
+    def __repr__(self):
+        return ''.join(
+            [self._render('{name} {value};'.format(name=self.name, value=line)) for line in self.lines]
+        )
+
+
 class Comment(Base):
     """ A simple comment object. """
 

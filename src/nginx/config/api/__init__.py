@@ -53,6 +53,7 @@ __all__ = [
     'Location',
     'KeyOption',
     'KeyValueOption',
+    'KeyValueMultilines',
     'KeyMultiValueOption',
     'Comment',
     'Config',

@@ -3,31 +3,56 @@ This module contains functions and variables that provide a variety of commonly 
 boilerplate.
 """
 from . import helpers
+from .headers import uwsgi_param
 from .api import EmptyBlock, Block
 
 
+def listen_options(port, ipv6_enabled=False):
+    if ipv6_enabled:
+        return KeyMultiValueOption(
+            'listen',
+            ['[::]:{}'.format(port), 'ipv6only=off']
+        )
+    else:
+        return KeyValueOption('listen', port)
+
+
+def listen_options_ssl(port, ipv6_enabled=False):
+    if ipv6_enabled:
+        return KeyMultiValueOption(
+            'listen',
+            ['[::]:{}'.format(port), 'ipv6only=off', 'ssl']
+        )
+    else:
+        return KeyMultiValueOption('listen', [port, 'ssl'])
+
+
 def _uwsgi_params():
-    """ These are the parameters provided by nginx in "uwsgi_params"
-
-    http://uwsgi-docs.readthedocs.io/en/latest/Nginx.html
-
-    """
     return helpers.duplicate_options(
         'uwsgi_param',
         [
-            ['QUERY_STRING', '$query_string'],
-            ['REQUEST_METHOD', '$request_method'],
-            ['CONTENT_TYPE', '$content_type'],
-            ['CONTENT_LENGTH', '$content_length'],
-            ['REQUEST_URI', '$request_uri'],
-            ['PATH_INFO', '$document_uri'],
-            ['DOCUMENT_ROOT', '$document_root'],
-            ['SERVER_PROTOCOL', '$server_protocol'],
-            ['REMOTE_ADDR', '$remote_addr'],
-            ['REMOTE_PORT', '$remote_port'],
-            ['SERVER_ADDR', '$server_addr'],
-            ['SERVER_PORT', '$server_port'],
-            ['SERVER_NAME', '$server_name'],
+            [uwsgi_param.QUERY_STRING, '$query_string'],
+            [uwsgi_param.REQUEST_METHOD, '$request_method'],
+            [uwsgi_param.CONTENT_TYPE, '$content_type'],
+            [uwsgi_param.CONTENT_LENGTH, '$content_length'],
+            [uwsgi_param.REQUEST_URI, '$request_uri'],
+            [uwsgi_param.PATH_INFO, '$document_uri'],
+            [uwsgi_param.DOCUMENT_ROOT, '$document_root'],
+            [uwsgi_param.SERVER_PROTOCOL, '$server_protocol'],
+            [uwsgi_param.REMOTE_ADDR, '$remote_addr'],
+            [uwsgi_param.REMOTE_PORT, '$remote_port'],
+            [uwsgi_param.SERVER_ADDR, '$server_addr'],
+            [uwsgi_param.SERVER_PORT, '$server_port'],
+            [uwsgi_param.SERVER_NAME, '$server_name'],
+        ]
+    )
+
+
+def _uwsgi_ssl_params():
+    return helpers.duplicate_options(
+        'uwsgi_param',
+        [
+            [uwsgi_param.CLIENT_SSL_CERT, '$ssl_client_raw_cert'],
         ]
     )
 
@@ -136,11 +161,19 @@ def _statsd_options_location():
 
 # aliases
 uwsgi_params = _uwsgi_params()
+uwsgi_ssl_params = _uwsgi_ssl_params()
 uwsgi_cache = _uwsgi_cache()
 gzip_options = _gzip_options()
 buffer_options = _large_buffers()
 uwsgi_cache_location = _uwsgi_cache_location()
 statsd_options_location = _statsd_options_location()
+
+
+def user_agent_block(blocklist, return_code=403):
+    return Block(
+        'if ($http_user_agent ~* ({}))'.format('|'.join(blocklist)),
+        **{'return': return_code}
+    )
 
 
 def ratelimit_options(qps):
