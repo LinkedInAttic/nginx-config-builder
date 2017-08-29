@@ -60,7 +60,7 @@ class Venv(setuptools.Command):
 
 setuptools.setup(
     name='nginx-config-builder',
-    version='0.0.2',
+    version='0.0.3',
     description="A python library for generating nginx configs.",
     author="Loren M. Carvalho",
     author_email='loren@linkedin.com',
