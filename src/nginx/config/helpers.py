@@ -3,11 +3,8 @@ Convienence utilities for building nginx configs
 """
 from multiprocessing import cpu_count
 
-import six
-
-from .api import Comment, Config, Section, Location
+from .api import Config, Location, Section
 from .api.blocks import EmptyBlock
-from .api.options import KeyValueOption, KeyMultiValueOption
 
 
 def dumps(config_list):

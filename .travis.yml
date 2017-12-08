@@ -1,13 +1,8 @@
-# Config file for automatic testing at travis-ci.org
-
+sudo: false
 language: python
-python: 3.5
-
-env:
-  - TOXENV=py35
-  - TOXENV=py27
-  - TOXENV=py26
-
-install: pip install -U tox
-
-script: tox -e ${TOXENV}
+python:
+ - "2.7"
+ - "3.5"
+ - "3.6"
+install: pip install tox-travis
+script: tox
