@@ -29,16 +29,16 @@ Example::
     worker_processes auto;
     daemon on;
     http {
-	include ../conf/mime.types;
-	server {
-	    server_name _;
-	    location /foo {
-		proxy_pass upstream;
-	    }
-	}
+        include ../conf/mime.types;
+        server {
+            server_name _;
+            location /foo {
+                proxy_pass upstream;
+            }
+        }
     }
     events {
-	worker_connections 1024;
+        worker_connections 1024;
     }
 
 .. The objects in this submodule are largely inspired by code found in https://github.com/FeroxTL/pynginxconfig-new.

@@ -119,7 +119,7 @@ python setup.py develop
 Don't forget to write/run tests!
 
 ```
-python setup.py test
+pip install tox
 tox
 ```
 

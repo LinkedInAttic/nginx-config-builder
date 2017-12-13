@@ -3,8 +3,8 @@ This module contains functions and variables that provide a variety of commonly 
 boilerplate.
 """
 from . import helpers
+from .api import Block, EmptyBlock, KeyMultiValueOption, KeyValueOption
 from .headers import uwsgi_param
-from .api import EmptyBlock, Block
 
 
 def listen_options(port, ipv6_enabled=False):
