@@ -9,6 +9,7 @@
 .env
 .tox*
 .venv*
+.pytest_cache*
 dist/
 venv/
 activate
