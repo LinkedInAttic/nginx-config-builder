@@ -5,7 +5,7 @@ import sys
 
 
 requirements = [
-    'six==1.10.0',
+    'six>=1.10.0',
 ]
 
 extras = {}
@@ -52,7 +52,7 @@ class Venv(setuptools.Command):
 
 setuptools.setup(
     name='nginx-config-builder',
-    version='1.0.0',
+    version='1.0.1',
     description="A python library for generating nginx configs.",
     author="Loren M. Carvalho",
     author_email='loren@linkedin.com',
@@ -70,6 +70,7 @@ setuptools.setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
     ],
     cmdclass={'venv': Venv},
 )

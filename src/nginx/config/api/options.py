@@ -63,7 +63,7 @@ class KeyMultiValueOption(KeyValueOption):
         )
 
 
-class KeyValuesMultilines(Base):
+class KeyValuesMultiLines(Base):
     def __init__(self, name, values=[]):
         self.name = name
         self.lines = []
@@ -133,3 +133,7 @@ class AttrList(AttrDict):
     def add(self, *items):
         for item in items:
             self.append(item)
+
+
+# alias for backwards compatibility
+KeyValuesMultilines = KeyValuesMultiLines
