@@ -2,9 +2,9 @@
 This module contains functions and variables that provide a variety of commonly used nginx config
 boilerplate.
 """
-from . import helpers
+from . import helpers, EmptyBlock, Block
 from .headers import uwsgi_param
-from .api import EmptyBlock, Block
+from .options import KeyMultiValueOption, KeyValueOption
 
 
 def listen_options(port, ipv6_enabled=False):

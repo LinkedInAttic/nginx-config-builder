@@ -3,11 +3,8 @@ Convienence utilities for building nginx configs
 """
 from multiprocessing import cpu_count
 
-import six
-
-from .api import Comment, Config, Section, Location
-from .api.blocks import EmptyBlock
-from .api.options import KeyValueOption, KeyMultiValueOption
+from . import Config, Section, Location
+from .blocks import EmptyBlock
 
 
 def dumps(config_list):
@@ -27,7 +24,7 @@ def duplicate_options(key, values):
     Example::
 
         from nginx.config.helpers import duplicate_options
-        from nginx.config.api import Location
+        from nginx.config import Location
         loc = Location(
             '/',
             duplicate_options('uwsgi_cache_valid', (['404', '5s'], ['200', '60s'])),

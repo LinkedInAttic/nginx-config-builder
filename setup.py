@@ -1,87 +1,80 @@
-#!/usr/bin/env python
-
-import os
-import setuptools
-import subprocess
 import sys
 
+if sys.version_info < (3, 6):
+    print('\nnginx-config-builder requires at least Python 3.6!')
+    sys.exit(1)
 
-setup_requires = [
-    'pytest-runner',
-]
+import os
+import subprocess
+import setuptools
+import venv
 
-requirements = [
-    'six==1.10.0',
-]
+from pathlib import Path
 
-test_requirements = [
-    'pytest==3.0.6',
-]
+requirements = ["six"]
 
 extras = {}
 
 if int(setuptools.__version__.split(".", 1)[0]) < 18:
     if sys.version_info[0:2] < (3, 3):
-        requirements.append("enum34==1.1.6")
+        requirements.append("enum34")
 else:
     extras[":python_version<'3.3'"] = ["enum34"]
 
 
 class Venv(setuptools.Command):
-    user_options = [('python=', None, 'Which interpreter to build your venv with')]
+    user_options = []
 
     def initialize_options(self):
-        self.python = ''
+        """Abstract method that is required to be overwritten"""
 
     def finalize_options(self):
         """Abstract method that is required to be overwritten"""
 
     def run(self):
-        venv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'venv', 'nginx-config-builder')
-        if '3' in self.python:
-            venv_cmd = [self.python, '-m', 'venv']
-        else:
-            venv_cmd = ['virtualenv']
-            if self.python:
-                venv_cmd.extend(['-p', self.python])
-        venv_cmd.append(venv_path)
-        print('Creating virtual environment in ', venv_path)
-        subprocess.check_call(venv_cmd)
-        print('Linking `activate` to top level of project.\n')
-        print('To activate, simply run `source activate`.')
+        venv_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "venv", "nginx-config-builder"
+        )
+        print("Creating virtual environment in {}".format(venv_path))
+        venv.main(args=[venv_path])
+        print(
+            "Linking `activate` to top level of project.\n"
+            "To activate, simply run `source activate`."
+        )
         try:
             os.symlink(
-                os.path.join(venv_path, 'bin', 'activate'),
-                os.path.join(os.path.dirname(os.path.abspath(__file__)), 'activate')
+                Path(venv_path, "bin", "activate"),
+                Path(Path(__file__).absolute().parent, "activate"),
             )
-        except OSError:
-            print('Unable to create symlink, you may have a stale symlink from a previous invocation.')
+        except FileExistsError:
+            pass
+
+
+def readme():
+    with open("README.md") as f:
+        return f.read()
 
 
 setuptools.setup(
-    name='nginx-config-builder',
-    version='0.0.3',
+    name="nginx-config-builder",
+    version="2.0.0",
     description="A python library for generating nginx configs.",
+    long_description=readme(),
+    long_description_content_type="text/markdown",
     author="Loren M. Carvalho",
-    author_email='loren@linkedin.com',
-    url='https://github.com/linkedin/nginx-config-builder',
-    packages=setuptools.find_packages('src'),
-    package_dir={'': 'src'},
+    author_email="loren@linkedin.com",
+    url="https://github.com/linkedin/nginx-config-builder",
+    packages=["nginx.config"],
+    package_dir={"": "src"},
     include_package_data=True,
-    setup_requires=setup_requires,
     install_requires=requirements,
     extras_require=extras,
     license="BSD license",
-    keywords='nginx-config-builder',
+    keywords="nginx-config-builder",
     classifiers=[
-        'License :: OSI Approved :: BSD License',
-        "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
+        "License :: OSI Approved :: BSD License",
+        "Programming Language :: Python :: 3 :: Only",
+        "Programming Language :: Python :: 3",
     ],
-    test_suite='test',
-    tests_require=requirements + test_requirements,
-    cmdclass={'venv': Venv},
+    cmdclass={"venv": Venv},
 )
