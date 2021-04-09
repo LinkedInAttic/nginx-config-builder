@@ -129,8 +129,8 @@ class Routable(Navigable):
 
     """
 
-    def add_route(self, path, **kwargs):
-        loc = Location(path, **kwargs)
+    def add_route(self, path, *args, **kwargs):
+        loc = Location(path, *args, **kwargs)
         self.add_child(loc)
         self.chobj(loc)
 
